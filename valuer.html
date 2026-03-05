@@ -42,17 +42,20 @@
                     <h2 class="text-lg font-bold flex items-center">
                         <span class="mr-2">🔥</span> 住宅市場動態熱力圖
                     </h2>
-                    <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-bold">LIVE UPDATE</span>
+                    <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-bold uppercase">Live Data</span>
                 </div>
                 <div id="map" class="shadow-inner border border-slate-100"></div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm p-6">
+            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-lg font-bold mb-4 flex items-center">
                     <span class="mr-2">🗞</span> 今日關聯新聞 (自動更新)
                 </h2>
                 <div id="news-container" class="space-y-4 h-[380px] overflow-y-auto custom-scroll pr-2">
-                    <p class="text-sm text-slate-400 italic">正在載入最新地產研究新聞...</p>
+                    <div class="flex flex-col items-center justify-center h-full text-slate-400">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
+                        <p class="text-xs italic">正在從伺服器獲取最新新聞...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,30 +64,51 @@
             <div class="lg:col-span-3 space-y-6">
                 <h2 class="text-2xl font-bold text-slate-800">主要研究專案</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-blue-600">
-                        <h3 class="text-xl font-bold mb-2">華富邨重建研究</h3>
-                        <p class="text-slate-500 text-sm mb-4">重點：Residual Method, 搬遷補償影響, 海景溢價分析。</p>
-                        <a href="#" class="text-blue-600 font-bold text-sm">閱讀完整報告 →</a>
+                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-blue-600 hover:shadow-md transition-all">
+                        <h3 class="text-xl font-bold mb-2 text-slate-800">華富邨重建研究</h3>
+                        <p class="text-slate-500 text-sm mb-4 leading-relaxed">分析內容：Residual Method 應用、搬遷補償對社會價值的影響、以及重建後的密度分析。</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold tracking-wider">VALUATION L3</span>
+                            <a href="#" class="text-blue-600 font-bold text-sm hover:underline italic underline-offset-4">閱讀報告 →</a>
+                        </div>
                     </article>
-                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-green-600">
-                        <h3 class="text-xl font-bold mb-2">北部都會區發展</h3>
-                        <p class="text-slate-500 text-sm mb-4">重點：土地收回條例 (Cap. 124), 補地價趨勢。</p>
-                        <a href="#" class="text-blue-600 font-bold text-sm">閱讀完整報告 →</a>
+                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-green-600 hover:shadow-md transition-all">
+                        <h3 class="text-xl font-bold mb-2 text-slate-800">北部都會區發展</h3>
+                        <p class="text-slate-500 text-sm mb-4 leading-relaxed">重點：收地補償政策 (Cap. 124)、農地轉用途估值、及新興科技城地價預測。</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] bg-green-50 text-green-600 px-2 py-1 rounded font-bold tracking-wider">LEGAL L3</span>
+                            <a href="#" class="text-blue-600 font-bold text-sm hover:underline italic underline-offset-4">閱讀報告 →</a>
+                        </div>
                     </article>
                 </div>
             </div>
 
             <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl">
-                <h2 class="text-lg font-bold mb-4 text-amber-400">APC 進度</h2>
-                <div class="space-y-4 text-sm">
-                    <p>Valuation: 80%</p>
-                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 w-[80%]"></div></div>
-                    <p>Inspection: 45%</p>
-                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 w-[45%]"></div></div>
+                <h2 class="text-lg font-bold mb-4 text-amber-400 border-b border-slate-700 pb-2">APC 進度追蹤</h2>
+                <div class="space-y-6 text-sm">
+                    <div>
+                        <div class="flex justify-between mb-1"><span>Valuation</span><span class="text-blue-400 font-mono">80%</span></div>
+                        <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 80%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1"><span>Inspection</span><span class="text-green-400 font-mono">45%</span></div>
+                        <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 45%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1"><span>Measurement</span><span class="text-amber-400 font-mono">60%</span></div>
+                        <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-amber-500 h-1.5 rounded-full" style="width: 60%"></div></div>
+                    </div>
+                </div>
+                <div class="mt-6 p-3 bg-slate-800 rounded-lg text-[11px] text-slate-400 italic leading-snug">
+                    系統提示：在進行華富邨估值時，請注意 VPS 4 關於 Basis of Value 的最新定義。
                 </div>
             </div>
         </div>
     </main>
+
+    <footer class="mt-12 py-8 border-t border-slate-200 text-center text-slate-400 text-xs tracking-widest uppercase">
+        RICS Valuer Project &copy; 2026 | Wong Jing Research Hub
+    </footer>
 
     <script>
         // 1. 初始化地圖
@@ -96,33 +120,54 @@
             [22.3298, 114.2330, 0.7], // 安達邨
             [22.4447, 114.0222, 0.9]  // 北都
         ];
-        L.heatLayer(heatData, {radius: 25, blur: 15}).addTo(map);
+        L.heatLayer(heatData, {radius: 25, blur: 15, maxZoom: 17}).addTo(map);
 
-        // 2. 關鍵功能：讀取 GitHub 機器人生成的 news.json
-        // 當你把這個 html 上傳到 GitHub 後，它會抓取同目錄下的 news.json
-        fetch('news.json')
-            .then(response => {
-                if (!response.ok) throw new Error('尚未有新聞數據');
-                return response.json();
-            })
-            .then(data => {
-                const container = document.getElementById('news-container');
-                if (data.length > 0) {
-                    container.innerHTML = ''; // 清空加載中文字
-                    data.forEach(item => {
-                        container.innerHTML += `
-                            <div class="p-3 bg-slate-50 rounded-xl border-l-4 border-blue-500 shadow-sm">
-                                <div class="text-[10px] text-blue-600 font-bold uppercase mb-1">${item.tag}</div>
-                                <a href="${item.url}" target="_blank" class="text-sm font-semibold hover:text-blue-700 block">${item.title}</a>
-                                <p class="text-[11px] text-slate-400 mt-2 italic font-mono">${item.date}</p>
-                            </div>
-                        `;
-                    });
-                }
-            })
-            .catch(err => {
-                document.getElementById('news-container').innerHTML = `<p class="text-xs text-red-400 font-mono">系統提示: ${err.message}<br>請先執行 GitHub Actions 抓取新聞。</p>`;
-            });
+        // 2. 核心：直連 GitHub Raw 數據 (繞過 Cache)
+        const username = 'wongjing172-glitch';
+        const repo = 'rics-valuation-hub';
+        const newsUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/news.json`;
+
+        function loadNews() {
+            const container = document.getElementById('news-container');
+            
+            fetch(newsUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('News File Not Found');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.length > 0) {
+                        container.innerHTML = '';
+                        data.forEach(item => {
+                            container.innerHTML += `
+                                <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-blue-500 shadow-sm transition-all hover:translate-x-1 cursor-default">
+                                    <div class="text-[10px] text-blue-600 font-bold uppercase mb-1 tracking-wider">${item.tag}</div>
+                                    <a href="${item.url}" target="_blank" class="text-sm font-semibold hover:text-blue-700 block leading-tight">${item.title}</a>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <span class="text-[10px] text-slate-400 font-mono">${item.date}</span>
+                                        <span class="text-[9px] bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 uppercase">Linked Study</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-10 underline decoration-dotted">今日無匹配關鍵字之住宅新聞。</p>';
+                    }
+                })
+                .catch(err => {
+                    container.innerHTML = `
+                        <div class="p-4 bg-red-50 text-red-600 rounded-lg text-[11px] leading-relaxed">
+                            <strong>系統連接失敗</strong><br>
+                            原因: ${err.message}<br><br>
+                            請確保：<br>
+                            1. GitHub Actions 已成功執行<br>
+                            2. news.json 檔案已存在於倉庫中
+                        </div>`;
+                });
+        }
+
+        // 執行載入
+        loadNews();
     </script>
 </body>
 </html>
