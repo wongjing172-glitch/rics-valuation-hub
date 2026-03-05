@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICS Valuation & Research Hub | 香港物業估值研究站</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <style>
+        #map { height: 450px; width: 100%; z-index: 1; border-radius: 1rem; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <header class="bg-blue-900 text-white shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">RICS VALUER PORTAL</h1>
+                <p class="text-xs text-blue-200 uppercase tracking-widest">Candidate Knowledge Base 2026</p>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#" class="hover:text-blue-300">首頁</a>
+                <a href="#" class="hover:text-blue-300">住宅研究</a>
+                <a href="#" class="hover:text-blue-300">地契查冊庫</a>
+                <a href="#" class="bg-amber-500 px-3 py-1 rounded-full text-blue-900">RICS 備考模式</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold flex items-center">
+                        <span class="mr-2">🔥</span> 住宅市場動態熱力圖
+                    </h2>
+                    <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-bold">LIVE UPDATE</span>
+                </div>
+                <div id="map" class="shadow-inner border border-slate-100"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-4 flex items-center">
+                    <span class="mr-2">🗞</span> 今日關聯新聞 (自動更新)
+                </h2>
+                <div id="news-container" class="space-y-4 h-[380px] overflow-y-auto custom-scroll pr-2">
+                    <p class="text-sm text-slate-400 italic">正在載入最新地產研究新聞...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-3 space-y-6">
+                <h2 class="text-2xl font-bold text-slate-800">主要研究專案</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-blue-600">
+                        <h3 class="text-xl font-bold mb-2">華富邨重建研究</h3>
+                        <p class="text-slate-500 text-sm mb-4">重點：Residual Method, 搬遷補償影響, 海景溢價分析。</p>
+                        <a href="#" class="text-blue-600 font-bold text-sm">閱讀完整報告 →</a>
+                    </article>
+                    <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-green-600">
+                        <h3 class="text-xl font-bold mb-2">北部都會區發展</h3>
+                        <p class="text-slate-500 text-sm mb-4">重點：土地收回條例 (Cap. 124), 補地價趨勢。</p>
+                        <a href="#" class="text-blue-600 font-bold text-sm">閱讀完整報告 →</a>
+                    </article>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold mb-4 text-amber-400">APC 進度</h2>
+                <div class="space-y-4 text-sm">
+                    <p>Valuation: 80%</p>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 w-[80%]"></div></div>
+                    <p>Inspection: 45%</p>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 w-[45%]"></div></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. 初始化地圖
+        var map = L.map('map').setView([22.3193, 114.1694], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        var heatData = [
+            [22.2536, 114.1332, 1.0], // 華富邨
+            [22.3298, 114.2330, 0.7], // 安達邨
+            [22.4447, 114.0222, 0.9]  // 北都
+        ];
+        L.heatLayer(heatData, {radius: 25, blur: 15}).addTo(map);
+
+        // 2. 關鍵功能：讀取 GitHub 機器人生成的 news.json
+        // 當你把這個 html 上傳到 GitHub 後，它會抓取同目錄下的 news.json
+        fetch('news.json')
+            .then(response => {
+                if (!response.ok) throw new Error('尚未有新聞數據');
+                return response.json();
+            })
+            .then(data => {
+                const container = document.getElementById('news-container');
+                if (data.length > 0) {
+                    container.innerHTML = ''; // 清空加載中文字
+                    data.forEach(item => {
+                        container.innerHTML += `
+                            <div class="p-3 bg-slate-50 rounded-xl border-l-4 border-blue-500 shadow-sm">
+                                <div class="text-[10px] text-blue-600 font-bold uppercase mb-1">${item.tag}</div>
+                                <a href="${item.url}" target="_blank" class="text-sm font-semibold hover:text-blue-700 block">${item.title}</a>
+                                <p class="text-[11px] text-slate-400 mt-2 italic font-mono">${item.date}</p>
+                            </div>
+                        `;
+                    });
+                }
+            })
+            .catch(err => {
+                document.getElementById('news-container').innerHTML = `<p class="text-xs text-red-400 font-mono">系統提示: ${err.message}<br>請先執行 GitHub Actions 抓取新聞。</p>`;
+            });
+    </script>
+</body>
+</html>
