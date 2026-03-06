@@ -54,7 +54,7 @@
                 <div id="news-container" class="space-y-4 h-[380px] overflow-y-auto custom-scroll pr-2">
                     <div class="flex flex-col items-center justify-center h-full text-slate-400">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
-                        <p class="text-xs italic">正在從伺服器獲取最新新聞...</p>
+                        <p class="text-xs italic text-center">正在抓取最新市場數據...<br>第一次載入可能需要 1 分鐘</p>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                         <p class="text-slate-500 text-sm mb-4 leading-relaxed">分析內容：Residual Method 應用、搬遷補償對社會價值的影響、以及重建後的密度分析。</p>
                         <div class="flex justify-between items-center">
                             <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold tracking-wider">VALUATION L3</span>
-                            <a href="#" class="text-blue-600 font-bold text-sm hover:underline italic underline-offset-4">閱讀報告 →</a>
+                            <a href="wah-fu-study.html" class="text-blue-600 font-bold text-sm hover:underline italic underline-offset-4">閱讀報告 →</a>
                         </div>
                     </article>
                     <article class="bg-white rounded-2xl shadow-sm p-6 border-t-4 border-green-600 hover:shadow-md transition-all">
@@ -122,51 +122,45 @@
         ];
         L.heatLayer(heatData, {radius: 25, blur: 15, maxZoom: 17}).addTo(map);
 
-        // 2. 核心：直連 GitHub Raw 數據 (繞過 Cache)
-        const username = 'wongjing172-glitch';
-        const repo = 'rics-valuation-hub';
-        const newsUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/news.json`;
-
+        // 2. 核心：讀取同目錄下的 news.json
         function loadNews() {
             const container = document.getElementById('news-container');
-            
-            fetch(newsUrl)
+            // 加入時間戳記避免瀏覽器讀取舊的緩存
+            const cacheBuster = "./news.json?t=" + new Date().getTime();
+
+            fetch(cacheBuster)
                 .then(response => {
-                    if (!response.ok) throw new Error('News File Not Found');
+                    if (!response.ok) throw new Error('找不到 news.json 檔案');
                     return response.json();
                 })
                 .then(data => {
                     if (data && data.length > 0) {
                         container.innerHTML = '';
                         data.forEach(item => {
+                            const isSystem = item.tag === "系統提示";
                             container.innerHTML += `
-                                <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-blue-500 shadow-sm transition-all hover:translate-x-1 cursor-default">
-                                    <div class="text-[10px] text-blue-600 font-bold uppercase mb-1 tracking-wider">${item.tag}</div>
+                                <div class="p-4 bg-slate-50 rounded-xl border-l-4 ${isSystem ? 'border-slate-300' : 'border-blue-500'} shadow-sm">
+                                    <div class="text-[10px] ${isSystem ? 'text-slate-400' : 'text-blue-600'} font-bold uppercase mb-1 tracking-wider">${item.tag}</div>
                                     <a href="${item.url}" target="_blank" class="text-sm font-semibold hover:text-blue-700 block leading-tight">${item.title}</a>
-                                    <div class="flex justify-between items-center mt-3">
-                                        <span class="text-[10px] text-slate-400 font-mono">${item.date}</span>
-                                        <span class="text-[9px] bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 uppercase">Linked Study</span>
-                                    </div>
+                                    <div class="mt-2 text-[10px] text-slate-400 font-mono">${item.date}</div>
                                 </div>
                             `;
                         });
                     } else {
-                        container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-10 underline decoration-dotted">今日無匹配關鍵字之住宅新聞。</p>';
+                        container.innerHTML = '<p class="text-xs text-slate-400 text-center py-10">今日無匹配新聞。</p>';
                     }
                 })
                 .catch(err => {
                     container.innerHTML = `
-                        <div class="p-4 bg-red-50 text-red-600 rounded-lg text-[11px] leading-relaxed">
-                            <strong>系統連接失敗</strong><br>
-                            原因: ${err.message}<br><br>
-                            請確保：<br>
-                            1. GitHub Actions 已成功執行<br>
-                            2. news.json 檔案已存在於倉庫中
+                        <div class="p-4 bg-red-50 text-red-600 rounded-lg text-xs">
+                            <strong>載入失敗</strong><br>
+                            原因: ${err.message}<br>
+                            <p class="mt-2 opacity-70">請確保 GitHub Actions 已經成功 Run Workflow 並且產生了 news.json 檔案。</p>
                         </div>`;
                 });
         }
 
-        // 執行載入
+        // 執行
         loadNews();
     </script>
 </body>
